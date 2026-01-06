@@ -59,6 +59,19 @@ Công nghệ ảo hóa rất rộng, nhưng có thể chia thành các loại ch
 - Tạo máy ảo: Ubuntu-test
 <img width="1919" height="777" alt="image" src="https://github.com/user-attachments/assets/b32a4954-d5ba-4ba1-96ea-eb5b3974d8e1" />
 
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+
+
+# TASK APACHE GUACAMOLE
+### Đã tải xong và set up apply ubuntu trong Docker
+<img width="1256" height="703" alt="image" src="https://github.com/user-attachments/assets/1b4de47b-3c81-4281-9595-408af01f799b" />
+<img width="573" height="479" alt="image" src="https://github.com/user-attachments/assets/f9c3fe68-226c-4c57-8efa-8108a7dca9e3" />
+
+
+
+
 
 
 
