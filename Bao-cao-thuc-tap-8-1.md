@@ -53,6 +53,16 @@
 
   nhanvien1-vitual-machine Đã join
 
+  ### 2 Phân quyền
+  2.1 Phân quyền sao cho admin(teleport) có thể SSH được vào cả hai server
+  <img width="676" height="97" alt="image" src="https://github.com/user-attachments/assets/b7214b67-4fe8-414d-8c3f-4171b2be47ac" />
+  <img width="1008" height="167" alt="image" src="https://github.com/user-attachments/assets/7d13727a-43cd-476f-a9a0-acd4148f1be5" />
+  <img width="798" height="294" alt="image" src="https://github.com/user-attachments/assets/b8904754-3097-4690-bda1-66b4d4fb4c83" />
+  2.2 Phân quyền cho nhanvien1 chỉ có thể SSH được vào chính server nhanvien1
+
+
+
+
 
 
 
