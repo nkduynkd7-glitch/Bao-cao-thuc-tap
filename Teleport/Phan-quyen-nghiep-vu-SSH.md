@@ -3,15 +3,23 @@
 Tài liệu này mô tả cách mình thiết kế và triển khai phân quyền truy cập SSH trong Teleport cho mô hình nghiệp vụ
 
 Mục tiêu nghiệp vụ
+
 Một tài khoản Leader có thể SSH vào server của hai nhân viên A và B
+
 Tài khoản Nhân viên A chỉ SSH được vào server A
+
 Tài khoản Nhân viên B chỉ SSH được vào server B
+
 Nhân viên A không thể SSH sang server B và ngược lại
+
 Tài khoản Admin Teleport chỉ dùng để quản trị hệ thống Teleport
 
 Phạm vi
+
 Áp dụng cho Teleport Community hoặc Enterprise
+
 Tập trung vào SSH Access Control bằng RBAC và Node Labels
+
 Không triển khai Access Request hay SSO trong tài liệu này
 
 ## 1 Tổng quan mô hình quyền của Teleport
