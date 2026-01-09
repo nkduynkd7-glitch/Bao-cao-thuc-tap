@@ -49,9 +49,10 @@ sudo apt install curl -y
 
 ### 3.2 Cài Teleport
 Ví dụ cài phiên bản 15
+Lưu ý: tất cả máy chủ pahir cài cùng một phiên bản Ví dụ: 15.4.x
 
 ```bash
-curl https://goteleport.com/static/install.sh | bash -s 15
+curl https://goteleport.com/static/install.sh | bash -s 15.4.6
 ```
 
 Kiểm tra
