@@ -70,8 +70,7 @@ Mục tiêu
 Gắn mỗi server vào đúng owner để kiểm soát quyền truy cập
 
 Đề xuất label tối thiểu theo nghiệp vụ
-owner employee-a cho Server A
-owner employee-b cho Server B
+owner nhanvien1 cho Server A
 
 Ví dụ mở rộng khi hệ thống lớn
 env dev hoặc prod
@@ -102,22 +101,6 @@ Restart Teleport trên Server A
 sudo systemctl restart teleport
 ```
 
-### 4.2 Gắn label cho Server B
-Trên Server B sửa cấu hình
-
-```yaml
-ssh_service:
-  enabled: yes
-  labels:
-    owner: employee-b
-```
-
-Restart
-
-```bash
-sudo systemctl restart teleport
-```
-
 ### 4.3 Kiểm tra label từ máy client hoặc máy Teleport trung tâm
 
 ```bash
@@ -126,17 +109,15 @@ tsh ls
 
 Kết quả mong muốn
 Mình thấy Server A có owner employee-a
-Mình thấy Server B có owner employee-b
 
 Nếu chưa thấy label
 Kiểm tra lại file /etc/teleport.yaml và restart teleport service trên node
 
 ## 5. Thiết kế Role theo nghiệp vụ
 
-Mình sẽ tạo 3 role chính
-leader
-employee-a
-employee-b
+Mình sẽ tạo 2 role chính
+- admin
+- nhanvien1
 
 Trong tất cả role mình quy định logins
 Logins là danh sách user Linux mà Teleport user được phép đăng nhập khi SSH
@@ -144,9 +125,9 @@ Ví dụ phổ biến là ubuntu hoặc teleport
 
 Khuyến nghị
 Mỗi node Linux cần có sẵn user Linux tương ứng với logins
-Ví dụ user ubuntu tồn tại trên cả Server A và Server B
+Ví dụ user admin tồn tại trên Server A và server chính 
 
-## 6. Tạo Role Leader
+## 6. Tạo Role Leader(admin)
 
 Yêu cầu
 Leader được SSH vào Server A và Server B
@@ -162,7 +143,7 @@ spec:
   allow:
     logins: ["ubuntu"]
     node_labels:
-      owner: ["employee-a", "employee-b"]
+      owner: ["nhanvien1"]
 ```
 
 Triển khai role trên Teleport Auth Server
@@ -175,10 +156,10 @@ Giải thích
 node_labels giới hạn node theo label owner
 Leader sẽ chỉ thấy những node có owner thuộc employee-a hoặc employee-b
 
-## 7. Tạo Role Employee A
+## 7. Tạo Role nhanvien1
 
 Yêu cầu
-Employee A chỉ SSH được vào Server A
+nhanvien1 chỉ SSH được vào Server A
 Không thấy Server B
 
 File employee-a-role.yaml
@@ -191,34 +172,13 @@ spec:
   allow:
     logins: ["ubuntu"]
     node_labels:
-      owner: "employee-a"
+      owner: "nhanvien1"
 ```
 
 Triển khai
 
 ```bash
 tctl create employee-a-role.yaml
-```
-
-## 8. Tạo Role Employee B
-
-File employee-b-role.yaml
-
-```yaml
-kind: role
-metadata:
-  name: employee-b
-spec:
-  allow:
-    logins: ["ubuntu"]
-    node_labels:
-      owner: "employee-b"
-```
-
-Triển khai
-
-```bash
-tctl create employee-b-role.yaml
 ```
 
 ## 9. Tạo User Teleport và gán Role
@@ -233,16 +193,10 @@ Mỗi lệnh tạo ra một link invite để người dùng đặt mật khẩu
 tctl users add leader --roles=leader --logins=ubuntu
 ```
 
-### 9.2 Tạo user Employee A
+### 9.2 Tạo user nhanvien1
 
 ```bash
-tctl users add employee-a --roles=employee-a --logins=ubuntu
-```
-
-### 9.3 Tạo user Employee B
-
-```bash
-tctl users add employee-b --roles=employee-b --logins=ubuntu
+tctl users add nhanvien1 --roles=nhanvien1 --logins=ubuntu
 ```
 
 ## 10. Kiểm chứng quyền theo tiêu chí nghiệp vụ
