@@ -22,7 +22,7 @@ Tài liệu này mô tả cách mình thiết kế và triển khai phân quyề
 
 - Không triển khai Access Request hay SSO trong tài liệu này
 
-## 1 Tổng quan mô hình quyền của Teleport
+## 1. Tổng quan mô hình quyền của Teleport
 
 Teleport sử dụng RBAC Role Based Access Control
 Quyền truy cập tài nguyên không dựa theo IP cứng
@@ -39,7 +39,7 @@ Có được dùng kubernetes database app hay không nếu bật các service t
 Khái niệm quan trọng
 Node Label là khóa để Teleport quyết định node nào thuộc phạm vi truy cập của role
 
-## 2 Sơ đồ luồng nghiệp vụ và trách nhiệm
+## 2. Sơ đồ luồng nghiệp vụ và trách nhiệm
 
 Vai trò chính
 Admin Teleport
@@ -63,7 +63,7 @@ Admin không dùng để SSH vận hành hằng ngày
 Leader không có quyền quản trị Teleport
 Employee không thấy tài nguyên ngoài phạm vi
 
-## 3 Thiết kế nhãn node Node Labels
+## 3. Thiết kế nhãn node Node Labels
 
 Mục tiêu
 Gắn mỗi server vào đúng owner để kiểm soát quyền truy cập
@@ -79,7 +79,7 @@ project ten-du-an
 
 Trong tài liệu này mình dùng owner để đơn giản và rõ ràng
 
-## 4 Áp nhãn cho Server A và Server B
+## 4. Áp nhãn cho Server A và Server B
 
 Điều kiện
 Server A và Server B đã join vào cluster Teleport với vai trò node
@@ -130,7 +130,7 @@ Mình thấy Server B có owner employee-b
 Nếu chưa thấy label
 Kiểm tra lại file /etc/teleport.yaml và restart teleport service trên node
 
-## 5 Thiết kế Role theo nghiệp vụ
+## 5. Thiết kế Role theo nghiệp vụ
 
 Mình sẽ tạo 3 role chính
 leader
@@ -145,7 +145,7 @@ Khuyến nghị
 Mỗi node Linux cần có sẵn user Linux tương ứng với logins
 Ví dụ user ubuntu tồn tại trên cả Server A và Server B
 
-## 6 Tạo Role Leader
+## 6. Tạo Role Leader
 
 Yêu cầu
 Leader được SSH vào Server A và Server B
@@ -174,7 +174,7 @@ Giải thích
 node_labels giới hạn node theo label owner
 Leader sẽ chỉ thấy những node có owner thuộc employee-a hoặc employee-b
 
-## 7 Tạo Role Employee A
+## 7. Tạo Role Employee A
 
 Yêu cầu
 Employee A chỉ SSH được vào Server A
@@ -199,7 +199,7 @@ Triển khai
 tctl create employee-a-role.yaml
 ```
 
-## 8 Tạo Role Employee B
+## 8. Tạo Role Employee B
 
 File employee-b-role.yaml
 
@@ -220,7 +220,7 @@ Triển khai
 tctl create employee-b-role.yaml
 ```
 
-## 9 Tạo User Teleport và gán Role
+## 9. Tạo User Teleport và gán Role
 
 Ghi chú
 Các lệnh sau chạy trên Teleport Auth Server
@@ -244,7 +244,7 @@ tctl users add employee-a --roles=employee-a --logins=ubuntu
 tctl users add employee-b --roles=employee-b --logins=ubuntu
 ```
 
-## 10 Kiểm chứng quyền theo tiêu chí nghiệp vụ
+## 10. Kiểm chứng quyền theo tiêu chí nghiệp vụ
 
 Mục tiêu của phần này là chứng minh quyền hoạt động đúng
 Teleport không chỉ chặn SSH mà còn ẩn node không thuộc quyền
@@ -289,7 +289,7 @@ tsh ssh ubuntu@server-b
 ### 10.3 Kiểm chứng Employee B chỉ thấy B
 Tương tự Employee A
 
-## 11 Bảng đối chiếu yêu cầu nghiệp vụ
+## 11. Bảng đối chiếu yêu cầu nghiệp vụ
 
 Yêu cầu
 Leader SSH server A
@@ -314,7 +314,7 @@ Ngoài ra
 Employee A không nhìn thấy Server B trong tsh ls
 Employee B không nhìn thấy Server A trong tsh ls
 
-## 12 Lỗi thường gặp khi triển khai phân quyền và cách xử lý
+## 12. Lỗi thường gặp khi triển khai phân quyền và cách xử lý
 
 ### 12.1 Leader không thấy node nào
 Nguyên nhân
@@ -397,7 +397,7 @@ Cách xử lý
 Tsh login luôn trỏ tới proxy cổng 3080
 Không login vào node
 
-## 13 Checklist nghiệm thu phân quyền
+## 13. Checklist nghiệm thu phân quyền
 
 1 Server A có label owner employee-a
 2 Server B có label owner employee-b
@@ -409,12 +409,10 @@ Không login vào node
 8 Employee-b tsh ls chỉ thấy B
 9 Tất cả SSH test theo nghiệp vụ đạt
 
-## 14 Gợi ý cải tiến khi đưa vào production
+## 14. Gợi ý cải tiến khi đưa vào production
 
 1 Tách role leader khỏi quyền quản trị Teleport
 2 Bật session recording để leader và admin có thể audit
 3 Bật MFA cho leader và admin
 4 Dùng access request nếu cần cấp quyền tạm thời
 5 Chuẩn hóa label theo env team project để mở rộng
-
-Hết
