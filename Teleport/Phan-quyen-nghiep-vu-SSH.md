@@ -14,7 +14,7 @@ Tài liệu này mô tả cách mình thiết kế và triển khai phân quyề
 
 - Tài khoản Admin Teleport chỉ dùng để quản trị hệ thống Teleport
 
-Phạm vi:
+## Phạm vi:
 
 - Áp dụng cho Teleport Community hoặc Enterprise
 
