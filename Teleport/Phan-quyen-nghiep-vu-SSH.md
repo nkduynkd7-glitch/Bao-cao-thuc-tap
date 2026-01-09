@@ -24,20 +24,20 @@ Tài liệu này mô tả cách mình thiết kế và triển khai phân quyề
 
 ## 1. Tổng quan mô hình quyền của Teleport
 
-Teleport sử dụng RBAC Role Based Access Control
-Quyền truy cập tài nguyên không dựa theo IP cứng
-Mà dựa trên Role và Labels của tài nguyên
+- Teleport sử dụng RBAC Role Based Access Control
+- Quyền truy cập tài nguyên không dựa theo IP cứng
+- Mà dựa trên Role và Labels của tài nguyên
 
-Trong bài toán SSH
-User Teleport được gán một hoặc nhiều Role
-Role quy định
-Được login Linux user nào logins
-Được nhìn thấy và SSH vào node nào node_labels
-Có được dùng port forwarding hay agent forwarding không
-Có được dùng kubernetes database app hay không nếu bật các service tương ứng
+### Trong bài toán SSH
+- User Teleport được gán một hoặc nhiều Role
+- Role quy định
+- Được login Linux user nào logins
+- Được nhìn thấy và SSH vào node nào node_labels
+- Có được dùng port forwarding hay agent forwarding không
+- Có được dùng kubernetes database app hay không nếu bật các service tương ứng
 
-Khái niệm quan trọng
-Node Label là khóa để Teleport quyết định node nào thuộc phạm vi truy cập của role
+### Khái niệm quan trọng
+- Node Label là khóa để Teleport quyết định node nào thuộc phạm vi truy cập của role
 
 ## 2. Sơ đồ luồng nghiệp vụ và trách nhiệm
 
@@ -51,17 +51,18 @@ Tài nguyên
 Server A
 Server B
 
-Luồng nghiệp vụ chuẩn
-Admin tạo và quản lý Role
-Admin tạo user Leader Employee A Employee B và gán Role tương ứng
-Leader dùng tsh hoặc Web UI để SSH vào Server A và Server B khi cần giám sát hỗ trợ
-Employee A chỉ SSH Server A để làm việc của mình
-Employee B chỉ SSH Server B để làm việc của mình
+### Luồng nghiệp vụ chuẩn
+- Admin tạo và quản lý Role
+- Admin tạo user Leader Employee A Employee B và gán Role tương ứng
+- Leader dùng tsh hoặc Web UI để SSH vào Server A và Server B khi cần giám sát hỗ trợ
+- Employee A chỉ SSH Server A để làm việc của mình
+- Employee B chỉ SSH Server B để làm việc của mình
 
-Nguyên tắc an toàn
-Admin không dùng để SSH vận hành hằng ngày
-Leader không có quyền quản trị Teleport
-Employee không thấy tài nguyên ngoài phạm vi
+### Nguyên tắc an toàn
+### Nhưng trong bài lab này chúng ta sẽ dùng Admin làm tài khoản leader, và sẽ tạo một Nhanvien1 để test
+- Admin không dùng để SSH vận hành hằng ngày
+- Leader không có quyền quản trị Teleport
+- Employee không thấy tài nguyên ngoài phạm vi
 
 ## 3. Thiết kế nhãn node Node Labels
 
