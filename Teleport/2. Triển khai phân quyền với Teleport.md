@@ -1,0 +1,270 @@
+# BÁO CÁO TRIỂN KHAI PHÂN QUYỀN SSH VỚI TELEPORT
+
+## 1. Tổng quan dự án
+
+Dự án sử dụng Teleport để quản lý truy cập SSH theo mô hình Zero Trust, thay thế SSH truyền thống (user + SSH key tĩnh).  
+Mục tiêu là quản lý tập trung, phân quyền rõ ràng, kiểm soát truy cập theo nhãn (label-based access control).
+
+Môi trường triển khai:
+- 01 Auth/Proxy Server: duynk-virtual-machine
+- 02 Node Server: nhanvien1-virtual-machine, nhanvien2-virtual-machine
+- Client: Windows (PowerShell + tsh)
+
+---
+
+## 2. Sơ đồ luồng truy cập Teleport
+
+### 2.1 Sơ đồ logic
+
+```
+[ User (tsh / Web UI) ]
+          |
+          v
+[ Teleport Proxy :3080 ]
+          |
+          v
+[ Teleport Auth :3025 ]
+          |
+          v
+[ Node Agent :3022 ]
+   |              |
+   v              v
+nhanvien1        nhanvien2
+```
+
+### 2.2 Diễn giải luồng
+
+1. User đăng nhập bằng `tsh login` hoặc Web UI
+2. Proxy xác thực user với Auth Server
+3. Auth Server kiểm tra role + node_labels
+4. Proxy thiết lập tunnel SSH tới Node Agent
+5. Node Agent cấp phiên SSH tạm thời
+
+---
+
+## 3. Phân toàn quyền cho tài khoản admin
+
+### 3.1 Role admin
+
+```yaml
+kind: role
+version: v7
+metadata:
+  name: role-teleport-admin
+spec:
+  allow:
+    logins:
+      - teleport
+    node_labels:
+      "*": "*"
+```
+
+### 3.2 Lệnh áp dụng
+
+```bash
+sudo tctl create -f role-teleport-admin.yaml
+sudo tctl users update admin --set-roles=role-teleport-admin
+```
+
+### 3.3 Kết quả
+- Admin thấy toàn bộ node
+- SSH vào tất cả server
+
+---
+
+## 4. Máy ảo nhanvien1 và phân quyền
+
+### 4.1 teleport.yaml (nhanvien1)
+
+```yaml
+teleport:
+  nodename: nhanvien1-virtual-machine
+  auth_servers:
+    - 192.168.233.128:3025
+
+auth_service:
+  enabled: "no"
+
+ssh_service:
+  enabled: "yes"
+  labels:
+    owner: nhanvien1
+
+proxy_service:
+  enabled: "no"
+```
+
+### 4.2 Role nhanvien1
+
+```yaml
+kind: role
+version: v7
+metadata:
+  name: role-employee-nhanvien1
+spec:
+  allow:
+    logins:
+      - teleport
+    node_labels:
+      owner: nhanvien1
+```
+
+---
+
+## 5. Máy ảo nhanvien2 và phân quyền
+
+### 5.1 teleport.yaml (nhanvien2)
+
+```yaml
+teleport:
+  nodename: nhanvien2-virtual-machine
+  auth_servers:
+    - 192.168.233.128:3025
+
+auth_service:
+  enabled: "no"
+
+ssh_service:
+  enabled: "yes"
+  labels:
+    owner: nhanvien2
+
+proxy_service:
+  enabled: "no"
+```
+
+### 5.2 Role nhanvien2
+
+```yaml
+kind: role
+version: v7
+metadata:
+  name: role-employee-nhanvien2
+spec:
+  allow:
+    logins:
+      - teleport
+    node_labels:
+      owner: nhanvien2
+```
+
+---
+
+## 6. Cho nhanvien1 SSH vào server nhanvien2
+
+### 6.1 Cập nhật role nhanvien1
+
+```yaml
+kind: role
+version: v7
+metadata:
+  name: role-employee-nhanvien1
+spec:
+  allow:
+    logins:
+      - teleport
+    node_labels:
+      owner:
+        - nhanvien1
+        - nhanvien2
+```
+
+### 6.2 Áp dụng
+
+```bash
+sudo tctl create -f role-employee-nhanvien1.yaml
+```
+
+---
+
+## 7. Các câu lệnh quan trọng đã sử dụng
+
+### 7.1 Đăng nhập
+
+```bash
+tsh login --proxy=192.168.233.128:3080 --user=admin --insecure
+```
+
+### 7.2 Kiểm tra node
+
+```bash
+tsh ls
+sudo tctl nodes ls
+```
+
+### 7.3 SSH qua Teleport
+
+```bash
+tsh ssh teleport@nhanvien1-virtual-machine
+tsh ssh teleport@nhanvien2-virtual-machine
+```
+
+---
+
+## 8. Các lỗi thường gặp và cách khắc phục
+
+### 8.1 Không thấy node trong cluster
+**Nguyên nhân**
+- teleport.yaml sai auth_servers
+- Node chưa join cluster
+- Teleport service chưa chạy
+
+**Cách fix**
+```bash
+sudo systemctl restart teleport
+sudo tctl nodes ls
+```
+
+---
+
+### 8.2 Lỗi `access denied`
+**Nguyên nhân**
+- Role không match node_labels
+- User chưa được gán role
+
+**Cách fix**
+```bash
+sudo tctl users get <user>
+sudo tctl roles get <role>
+```
+
+---
+
+### 8.3 Lỗi `connection refused :3022`
+**Nguyên nhân**
+- ssh_service chưa enable
+- Firewall chặn port
+
+**Cách fix**
+```bash
+sudo ss -tuln | grep 3022
+sudo ufw allow 3022
+```
+
+---
+
+### 8.4 Lỗi `unexpected role`
+**Nguyên nhân**
+- Gõ sai cú pháp tctl
+
+**Cú pháp đúng**
+```bash
+sudo tctl get roles
+sudo tctl get role role-name
+```
+
+---
+
+## 9. Kết luận
+
+Dự án đã triển khai thành công:
+- Mô hình quản lý SSH Zero Trust
+- Phân quyền theo label linh hoạt
+- Admin quản lý tập trung
+- Nhân viên bị giới hạn đúng phạm vi
+
+Hệ thống có thể mở rộng cho nhiều server và user mà không cần thay đổi kiến trúc.
+
+---
+
+**Báo cáo kết thúc**
