@@ -25,10 +25,14 @@ sudo nmtui
 ### Bước 2: Chỉnh sửa cấu hình mạng
 
 1. Trong giao diện nmtui, chọn Edit a connection và nhấn Enter.
+<img width="1273" height="792" alt="image" src="https://github.com/user-attachments/assets/f4277fcb-9e43-4aa5-b5ea-e7d5bd982272" />
+
 
 2. Chọn kết nối mạng bạn muốn cấu hình (thường là Wired connection nếu bạn đang sử dụng kết nối Ethernet).
 
 3. Chọn Edit và nhấn Enter.
+
+<img width="1272" height="761" alt="image" src="https://github.com/user-attachments/assets/df4e3421-9dce-46d8-b52f-c105ae32200c" />
 
 4. Tìm và chọn mục IPv4 CONFIGURATION.
 
@@ -36,15 +40,21 @@ sudo nmtui
 
 6. Nhập các thông tin sau:
 
-- Address: Địa chỉ IP tĩnh bạn muốn cấu hình, ví dụ: 192.168.1.100/24.
+- Address: Địa chỉ IP tĩnh bạn muốn cấu hình, ví dụ: 192.168.233.1/24.
 
-- Gateway: Địa chỉ Gateway (thường là địa chỉ của router, ví dụ: 192.168.1.1).
+- Gateway: Địa chỉ Gateway (thường là địa chỉ của router, ví dụ: 192.168.233.10).
 
 - DNS Servers: Địa chỉ của các DNS (bạn có thể sử dụng DNS của Google, ví dụ: 8.8.8.8 và 8.8.4.4).
+
+<img width="1280" height="794" alt="image" src="https://github.com/user-attachments/assets/47b31e4a-559d-4017-ad04-43544698619a" />
+
 
 7. Sau khi nhập các thông tin, chọn OK để lưu thay đổi.
 
 8. Quay lại màn hình chính và chọn Activate a connection để kích hoạt kết nối với các thay đổi mới.
+
+<img width="1268" height="790" alt="image" src="https://github.com/user-attachments/assets/075b2425-23f6-4e43-a7d3-a40a15f0cc08" />
+
 
 ### Bước 3: Kiểm tra kết nối
 
