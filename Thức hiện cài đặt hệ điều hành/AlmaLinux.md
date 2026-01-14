@@ -62,3 +62,6 @@ Sau khi cấu hình xong, bạn có thể kiểm tra lại kết nối mạng b�
 ```yaml
 ip a
 ```
+
+<img width="1273" height="797" alt="image" src="https://github.com/user-attachments/assets/6092a620-eaf8-4efd-a5f3-f02103d72c83" />
+
