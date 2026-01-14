@@ -1,8 +1,61 @@
 # Ubuntu22.04
 ## Đổi Password user root và Admin
 ### Đổi password Admin
+#### Các bước reset mật khẩu trên Ubuntu
+1. Khởi động lại máy ảo và vào chế độ GRUB:
 
-<img width="601" height="214" alt="image" src="https://github.com/user-attachments/assets/63849586-a345-4727-9cf2-c565db4c3c2b" />
+- Khi máy ảo khởi động lại, nhanh chóng nhấn Shift (hoặc Esc, tùy vào hệ thống) để vào menu GRUB.
+
+2. Chỉnh sửa dòng khởi động GRUB:
+
+- Trong menu GRUB, dùng mũi tên di chuyển xuống Ubuntu (Recovery Mode) (hoặc chế độ khôi phục).
+
+- Chọn Advanced options for Ubuntu nếu bạn không thấy tùy chọn trên, rồi chọn dòng Ubuntu, with Linux [phiên bản] (recovery mode).
+
+<img width="608" height="443" alt="image" src="https://github.com/user-attachments/assets/81e3ae32-bc23-4768-b6c9-435de5c62d1b" />
+
+
+3. Vào chế độ root (superuser):
+
+- Khi hệ thống vào chế độ recovery, bạn sẽ thấy một menu.
+
+- Di chuyển xuống và chọn root (chế độ root shell prompt).
+
+- Nhấn Enter. Bạn sẽ được đưa vào một shell với quyền root.
+
+<img width="726" height="286" alt="image" src="https://github.com/user-attachments/assets/e6115907-6a7a-4ba3-902c-9f5e3e8059e1" />
+  
+
+4. Gắn lại phân vùng hệ thống:
+
+Để có quyền ghi vào hệ thống, gõ lệnh sau để gắn lại hệ thống ở chế độ đọc/ghi:
+```yaml
+mount -o remount,rw /
+```
+5. Đặt lại mật khẩu người dùng:
+
+- Sử dụng lệnh passwd để thay đổi mật khẩu cho người dùng của bạn:
+- 
+<img width="722" height="532" alt="image" src="https://github.com/user-attachments/assets/adf3469f-cbd4-4b18-9ce7-5332c4e4d65d" />
+
+6. Nhập mật khẩu mới:
+
+- Bạn sẽ được yêu cầu nhập mật khẩu mới. Nhập mật khẩu mới và xác nhận lại.
+   
+<img width="718" height="400" alt="image" src="https://github.com/user-attachments/assets/fa634e99-2e49-4e59-8d37-a431f4eaabc6" />
+
+7. Khởi động lại hệ thống:
+
+Sau khi thay đổi mật khẩu thành công, gõ lệnh sau để khởi động lại máy:
+```yaml
+reboot
+```
+ 
+
+
+
+
+
 
 ### Đổi password Root
 
