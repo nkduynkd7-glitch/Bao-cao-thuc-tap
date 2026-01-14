@@ -68,7 +68,64 @@ passwd root
 ```
 ## Cấu hình IP
 
-<img width="599" height="358" alt="image" src="https://github.com/user-attachments/assets/efea3899-074b-4bcb-9727-f3f1526e51d6" />
+1. Mở tệp cấu hình mạng:
+
+Trên Ubuntu 18.04 trở lên, hệ thống mạng sử dụng Netplan để cấu hình. Bạn cần chỉnh sửa tệp cấu hình của Netplan. Mở terminal và chỉnh sửa tệp cấu hình trong thư mục /etc/netplan/.
+
+Đầu tiên, hãy liệt kê các tệp trong thư mục netplan:
+
+```yaml
+ls /etc/netplan/
+```
+Bạn sẽ thấy một tệp có dạng 00-installer-config.yaml hoặc tên tương tự.
+
+2. Chỉnh sửa tệp cấu hình mạng:
+
+Mở tệp cấu hình mạng bằng trình soạn thảo văn bản (ví dụ: nano):
+```yaml
+sudo nano /etc/netplan/00-installer-config.yaml
+```
+
+3. Cấu hình IP tĩnh:
+
+Trong tệp cấu hình này, bạn sẽ thấy phần cấu hình mạng, hãy chỉnh sửa nó để cấu hình IP tĩnh. Một cấu hình ví dụ cho IP tĩnh như sau:
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens33:
+      dhcp4: false
+      addresses:
+        - 192.168.233.1/24  # Thay đổi địa chỉ IP và subnet mask nếu cần
+      gateway4: 192.168.233.20  # Địa chỉ gateway
+      nameservers:
+        addresses:
+          - 8.8.8.8   # DNS chính
+          - 8.8.4.4   # DNS phụ
+
+```
+<img width="306" height="245" alt="image" src="https://github.com/user-attachments/assets/715c95b5-f639-46dd-b278-fe4211407f48" />
+
+4. Lưu và áp dụng cấu hình:
+
+Sau khi chỉnh sửa xong, nhấn Ctrl + X, sau đó nhấn Y và Enter để lưu tệp.
+
+Áp dụng cấu hình bằng lệnh sau:
+```yaml
+sudo netplan apply
+```
+<img width="951" height="224" alt="image" src="https://github.com/user-attachments/assets/079db3ac-f1ab-48cb-8cf3-b40384d85cec" />
+
+5. Kiểm tra cấu hình IP:
+
+Để xác nhận rằng IP đã được cấu hình chính xác, bạn có thể sử dụng lệnh:
+```yaml
+ip a
+```
+<img width="1032" height="470" alt="image" src="https://github.com/user-attachments/assets/2704291e-bfc9-44cc-b96a-9a2d5b09be22" />
+
+
 
 ## Gộp/chia mở rộng ở
 
