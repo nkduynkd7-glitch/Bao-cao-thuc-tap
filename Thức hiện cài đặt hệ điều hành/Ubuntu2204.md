@@ -35,7 +35,9 @@ mount -o remount,rw /
 5. Đặt lại mật khẩu người dùng:
 
 - Sử dụng lệnh passwd để thay đổi mật khẩu cho người dùng của bạn:
-- 
+```yaml
+passwd tên_người_dùng
+``` 
 <img width="722" height="532" alt="image" src="https://github.com/user-attachments/assets/adf3469f-cbd4-4b18-9ce7-5332c4e4d65d" />
 
 6. Nhập mật khẩu mới:
@@ -59,8 +61,11 @@ reboot
 
 ### Đổi password Root
 
-<img width="597" height="132" alt="image" src="https://github.com/user-attachments/assets/1b9d9d48-20a8-4b84-b5b5-c4e99ac9aefc" />
-
+Thao tác giống như thay đổi với tài khoản Admin
+- Ở Bước 5
+```yaml
+passwd root
+```
 ## Cấu hình IP
 
 <img width="599" height="358" alt="image" src="https://github.com/user-attachments/assets/efea3899-074b-4bcb-9727-f3f1526e51d6" />
