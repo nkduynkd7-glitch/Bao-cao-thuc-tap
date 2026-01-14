@@ -4,7 +4,7 @@
 1. Trong màn hình Choose an option
 2. Chọn **"Trouble Shoot"**.
 3. Sau đó chọn **"Command Prompt"**.
-4. <img width="1016" height="791" alt="image" src="https://github.com/user-attachments/assets/8825762e-0094-465a-a681-bc609bf4eb28" />
+<img width="1016" height="791" alt="image" src="https://github.com/user-attachments/assets/8825762e-0094-465a-a681-bc609bf4eb28" />
 
 
 
@@ -25,9 +25,24 @@
 1. Đóng Command Prompt và chọn **"Continue"** để khởi động lại máy tính.
 
 
-### Bước 4. Đặt mật khẩu mới
+## Bước 4: Reset Mật Khẩu
+
+1. Khi máy tính khởi động, ở màn hình đăng nhập, nhấn **Windows Key + U** để mở Command Prompt. Hoặc biểu tượng như hình dưới
+2. Trong Command Prompt, gõ lệnh sau để reset mật khẩu:
+
+    ```bash
+    net user <username> <newpassword>
+    ```
+
+    Thay thế `<username>` bằng tên người dùng và `<newpassword>` bằng mật khẩu mới.
 
 <img width="977" height="502" alt="image" src="https://github.com/user-attachments/assets/91307c51-3d39-433e-9d78-d48e70399dc1" />
+
+3. Đăng nhập bằng mật khẩu mới và khôi phục file `Utilman.exe` nếu cần:
+
+```bash
+    copy C:\Utilman.exe C:\Windows\System32\Utilman.exe
+```
 
 
 ## Cấu hình IP
