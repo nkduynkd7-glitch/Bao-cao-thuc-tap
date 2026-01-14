@@ -1,51 +1,34 @@
 # Window Server 2022
 ## Thực hiện reset password Administrator
-### Cách 1:
-#### 1. Đăng nhập vào Windows Server 2022
+### Bước 1: Khởi động lại máy WindowServer2022, ấn phím F2
+1. Trong màn hình Choose an option
+2. Chọn **"Trouble Shoot"**.
+3. Sau đó chọn **"Command Prompt"**.
+4. <img width="1016" height="791" alt="image" src="https://github.com/user-attachments/assets/8825762e-0094-465a-a681-bc609bf4eb28" />
+
+
+
+
+### Bước 2. Command Prompt
+1. Trong Command prompt
+ ```bash
+    c:
+    cd Windows\System32
+    ren Utilman.exe Ulilman.exe.old
+    copy cmd.exe Utilman.exe
+    ```
+
+<img width="676" height="58" alt="image" src="https://github.com/user-attachments/assets/4e1150d4-3fc2-4bdc-b3f3-6778884e64e1" />
+
+### Bước 3. Khởi Động Lại Máy
+
+1. Đóng Command Prompt và chọn **"Continue"** để khởi động lại máy tính.
+
+
+### Bước 4. Đặt mật khẩu mới
 
 <img width="977" height="502" alt="image" src="https://github.com/user-attachments/assets/91307c51-3d39-433e-9d78-d48e70399dc1" />
 
-
-#### 2. Mở "Computer Management"
-
-Nhấn Win + X và chọn Computer Management từ menu.
-
-Hoặc, bạn có thể tìm kiếm Computer Management trong menu Start.
-
-####v 3. Chọn "Local Users and Groups"
-
-Trong cửa sổ Computer Management, điều hướng đến System Tools > Local Users and Groups > Users.
-
-#### 4. Chỉnh sửa tài khoản Administrator
-
-Trong mục Users, bạn sẽ thấy danh sách các tài khoản người dùng.
-
-Nhấp chuột phải vào tài khoản Administrator và chọn Set Password.
-
-<img width="978" height="695" alt="image" src="https://github.com/user-attachments/assets/7e2a9109-4be3-4915-b7c9-ad2eff03fc78" />
-
-#### 5. Đặt mật khẩu mới
-
-Một cửa sổ sẽ hiện ra yêu cầu bạn nhập mật khẩu mới cho tài khoản Administrator.
-
-Nhập mật khẩu mới và xác nhận lại. Sau đó nhấn OK.
-
-<img width="1018" height="796" alt="image" src="https://github.com/user-attachments/assets/dc6d9e5a-8ec6-44d9-b7c7-bd6224fd289c" />
-
-
-#### 6. Đăng xuất và đăng nhập lại
-
-Sau khi đổi mật khẩu, bạn có thể đăng xuất và đăng nhập lại bằng mật khẩu mới.
-
-### Cách 2:
-#### 1. Ctrl+Alt+Del
-Ở màn hình đăng nhập, ấn tổ hợp Ctrl+Alt+Del sẽ hiện ra các tùy chọn. 
-
-<img width="376" height="406" alt="image" src="https://github.com/user-attachments/assets/7c8d4aee-f235-4fbf-8ad4-e0b0e804ac39" />
-
-Ấn vào Change a pasword
-
-<img width="759" height="711" alt="image" src="https://github.com/user-attachments/assets/980aff63-8ecf-45e8-9bd2-6b7896be834e" />
 
 ## Cấu hình IP
 ### 1. Mở Advanced network settings
