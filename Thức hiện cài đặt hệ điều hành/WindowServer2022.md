@@ -3,7 +3,8 @@
 ### Cách 1:
 #### 1. Đăng nhập vào Windows Server 2022
 
-Trước tiên, bạn cần đăng nhập vào hệ thống với quyền Administrator. Bạn sẽ làm việc trực tiếp trên máy ảo của mình.
+<img width="977" height="502" alt="image" src="https://github.com/user-attachments/assets/91307c51-3d39-433e-9d78-d48e70399dc1" />
+
 
 #### 2. Mở "Computer Management"
 
