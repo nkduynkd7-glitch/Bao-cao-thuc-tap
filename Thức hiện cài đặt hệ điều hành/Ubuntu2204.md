@@ -28,6 +28,19 @@
 
   <img width="600" height="290" alt="image" src="https://github.com/user-attachments/assets/a5ae5c17-f901-4c6a-b8f8-b7908cc0fd70" />
 
+### Chia ổ
+- Cài GParted
+
+
+
+<img width="732" height="380" alt="image" src="https://github.com/user-attachments/assets/ebe14e68-b686-495e-8742-94c4606734a4" />
+
+- Mở GParted
+
+<img width="772" height="531" alt="image" src="https://github.com/user-attachments/assets/5f362f3d-2f7a-4d06-8dcd-5bc5c72f818a" />
+
+
+
 
 
 
