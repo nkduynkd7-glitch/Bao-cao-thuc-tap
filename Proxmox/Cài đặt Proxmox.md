@@ -27,33 +27,3 @@ Công nghệ ảo hóa rất rộng, nhưng có thể chia thành các loại ch
 Đã hoàn thành cài đặt
 
 <img width="1919" height="989" alt="image" src="https://github.com/user-attachments/assets/d5b687ab-356f-4a2b-aa05-a0dc2fc7b0af" />
-
-### 2.Add Storage
-- Thêm ổ /dev/sdb/ -> WipeDisk -> Initialize GPT
-<img width="1602" height="695" alt="image" src="https://github.com/user-attachments/assets/8085643a-fdab-4f08-93f5-da3e288130c7" />
-- Create Directory
-<img width="1599" height="689" alt="image" src="https://github.com/user-attachments/assets/8cc29ad3-15e7-4522-ace7-089180ea567f" />
-- Đã tạo xong
-<img width="1607" height="696" alt="image" src="https://github.com/user-attachments/assets/d000b183-ced1-4ede-88fd-49b84a2c542f" />
-
-### 3.Cấu hình network dạng Flat, Multi VLAN
-- Flat network: Tất cả VM cùng chung 1 mạng, không VLAN.
-  + Kiểm tra trạng thái Bridge trên giao diện web
-  <img width="1602" height="689" alt="image" src="https://github.com/user-attachments/assets/32f97ef1-2732-43c0-a586-bb43fe4e37e2" />
-  + Cấu hình DNS để máy ảo ra được Internet
-  <img width="1601" height="693" alt="image" src="https://github.com/user-attachments/assets/b6c32a87-fe54-4b2e-828c-bfcfa2fc8945" />
-  + Tạo máy ảo để test Flat Network
-
-### 4. Tạo máy ảo và gộp ổ cứng giữa các dât store
-- Do dung lượng của ổ cứng không đủ để upload file ISO nên phải gộp ổ local-lvm vào local (pve)
-- Các bước để gộp ổ:
-  + Xóa định nghĩa storage trong cấu hình Proxmox: pvesm free local-lvm
-  + Xóa phân vùng LVM thực tế: lvremove /dev/pve/data
-  + Mở rộng phân vùng root (local) để lấy hết dung lượng trống: lvextend -l +100%FREE /dev/pve/root
-  + Cập nhật hệ thống tệp (File System) để không cần khỏi động lại: resize2fs /dev/mapper/pve-root
-- Kết quả:
-  <img width="1919" height="669" alt="image" src="https://github.com/user-attachments/assets/01cc9c65-3415-4a87-92b9-2e6ec33740c3" />
--Cài đặt thành công Ubuntu
-<img width="798" height="493" alt="image" src="https://github.com/user-attachments/assets/ce9573a2-efdc-406f-b485-3bcefb35e3b9" />
-- Tạo máy ảo: Ubuntu-test
-<img width="1919" height="777" alt="image" src="https://github.com/user-attachments/assets/b32a4954-d5ba-4ba1-96ea-eb5b3974d8e1" />
