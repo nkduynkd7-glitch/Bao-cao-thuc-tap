@@ -129,97 +129,174 @@ ip a
 
 ## Gộp/chia mở rộng ở
 
-### Mở rộng ổ
-
-- Trước khi mở rộng ổ
-
-<img width="605" height="289" alt="image" src="https://github.com/user-attachments/assets/74d0ede8-396a-4ff5-aab9-6363cb1177f3" />
-  
-- Sau khi mở rộng ổ
-
-<img width="600" height="316" alt="image" src="https://github.com/user-attachments/assets/661c6fca-709f-4665-be4c-79a860d56bd9" />
-  
-- Kết quả
-
-<img width="600" height="290" alt="image" src="https://github.com/user-attachments/assets/a5ae5c17-f901-4c6a-b8f8-b7908cc0fd70" />
-
 ### Chia ổ
-- Cài GParted
 
+### Bước 1: Xác định ổ cứng của bạn
 ```yaml
-sudo apt update
-sudo apt install gparted -y
+lsblk
 ```
+<img width="589" height="201" alt="image" src="https://github.com/user-attachments/assets/b9fb3963-d17a-4447-975f-cb016faa789e" />
 
-<img width="732" height="380" alt="image" src="https://github.com/user-attachments/assets/ebe14e68-b686-495e-8742-94c4606734a4" />
+### Bước 2: Sử dụng fdisk để chia ổ cứng
 
-- Mở GParted
+1. Chúng ta sẽ dùng công cụ fdisk để chia ổ cứng.
 
+Chạy lệnh sau để vào fdisk:
 ```yaml
-sudo gparted
+sudo fdisk /dev/sdb
 ```
+Thay /dev/sdb bằng tên ổ đĩa bạn muốn chia.
 
-<img width="772" height="531" alt="image" src="https://github.com/user-attachments/assets/5f362f3d-2f7a-4d06-8dcd-5bc5c72f818a" />
+<img width="582" height="206" alt="image" src="https://github.com/user-attachments/assets/6fef5053-ebc3-453d-8fa0-602855dbe649" />
 
-- Ví dụ bạn có 1 phân vùng /dev/sdb đang chiếm hết dung lượng, bạn muốn tách ra thành 2 ổ với mỗi ổ 10GB.
+2. Nhập m để hiển thị các lệnh có sẵn trong fdisk.
 
-#### Bước 1: Tạo Partition Table (Bắt buộc)
-Trước khi chia ổ, bạn phải tạo một bảng điều hướng cho nó:
+3. Để tạo phân vùng mới, gõ n và chọn kiểu phân vùng (Primary hoặc Extended). Bạn sẽ được yêu cầu nhập các giá trị như số phân vùng và kích thước.
 
-1. Trên thanh thực đơn của GParted, chọn Device -> Create Partition Table...
-
-2. Chọn loại là gpt (đây là chuẩn hiện đại và ổn định nhất).
-
-<img width="1271" height="792" alt="image" src="https://github.com/user-attachments/assets/273eff7f-6e65-41bc-aa47-b7db567c35a9" />
+<img width="820" height="418" alt="image" src="https://github.com/user-attachments/assets/5d691976-838a-4d1b-b1f9-b36420e4638b" />
 
 
-3. Nhấn Apply. Lúc này ổ đĩa sẽ sẵn sàng để chia.
+4. Sau khi tạo phân vùng, bạn có thể kiểm tra lại bằng lệnh p.
 
-<img width="765" height="523" alt="image" src="https://github.com/user-attachments/assets/51770a74-6db4-4705-a382-57260b6003d3" />
+<img width="566" height="210" alt="image" src="https://github.com/user-attachments/assets/46e422e7-17e3-461c-9700-b0c8b9619a00" />
 
-#### Bước 2: Chia ổ sdb (Ví dụ chia làm 2 ổ)
-Giả sử bạn muốn chia thành một ổ 7GB và phần còn lại là ổ khác:
-
-1. Chuột phải vào vùng màu xám (unallocated) -> chọn New.
-
-
-2. Tại ô New size (MiB), nhập 10240 (tương đương 10GB).
    
-<img width="1271" height="792" alt="image" src="https://github.com/user-attachments/assets/a68115a5-2b34-4252-ae86-1b96ad33428b" />
 
-3. Tại ô File system, chọn ext4. Nhấn Add.
+5. Để lưu thay đổi và thoát, gõ w.
 
-4. Lúc này sẽ còn dư một khoảng trống xám. Bạn lại chuột phải vào vùng xám đó -> chọn New.
+### Bước 3: Tạo hệ thống tệp cho phân vùng
 
-5. Để mặc định dung lượng còn lại, chọn File system là ext4. Nhấn Add.
-<img width="1271" height="792" alt="image" src="https://github.com/user-attachments/assets/a68115a5-2b34-4252-ae86-1b96ad33428b" />
+1. Sau khi chia ổ cứng, bạn cần tạo hệ thống tệp (filesystem) cho phân vùng mới. Ví dụ, nếu bạn chia ổ thành phân vùng /dev/sda1, bạn có thể tạo filesystem như sau:
+```yaml
+sudo mkfs.ext4 /dev/sdb1
+```
+Bạn có thể thay đổi kiểu filesystem nếu cần (ví dụ: ext4, xfs,...).
+
+<img width="626" height="400" alt="image" src="https://github.com/user-attachments/assets/456306e7-2880-4086-8330-8352e3f8eb06" />
+
+2. Mount các phân vùng mới
+
+Sau khi tạo hệ thống tệp, bạn cần gắn (mount) các phân vùng này vào thư mục trong hệ thống.
+
+- Tạo thư mục mount:
+Tạo thư mục để gắn các phân vùng. Ví dụ:
+
+<img width="351" height="41" alt="image" src="https://github.com/user-attachments/assets/a528d2cb-59f8-413f-b435-0607c0ba3609" />
+
+- Mount phân vùng vào các thư mục:
+
+Mount phân vùng đầu tiên vào thư mục /mnt/part1:
+```yaml
+sudo mount /dev/sdb1 /mnt/part1
+```
+Mount phân vùng thứ hai vào thư mục /mnt/part2:
+```yaml
+sudo mount /dev/sdb2 /mnt/part2
+```
+- Đảm bảo phân vùng tự động mount khi khởi động
+
+Để đảm bảo các phân vùng này sẽ tự động được mount khi hệ thống khởi động lại, bạn cần thêm chúng vào tệp /etc/fstab.
+Mở tệp /etc/fstab:
+```yaml
+sudo nano /etc/fstab
+```
+
+Thêm các dòng sau vào cuối tệp:
+```yaml
+/dev/sdb1  /mnt/part1  ext4  defaults  0  2
+/dev/sdb2  /mnt/part2  ext4  defaults  0  2
+```
+
+<img width="1073" height="307" alt="image" src="https://github.com/user-attachments/assets/07689af5-7641-4315-b4f0-e83a476fda5b" />
 
 
-6. Quan trọng: Nhấn biểu tượng dấu tích xanh (V) trên thanh công cụ để thực thi các thay đổi.
-<img width="768" height="534" alt="image" src="https://github.com/user-attachments/assets/9a24e904-aa85-4f6c-b4b6-cc20293ff7c0" />
+Lưu và thoát (Nhấn Ctrl + X, sau đó nhấn Y và Enter).
 
-### Bước 3: Cách gộp lại thành một ổ duy nhất
-Nếu sau này bạn muốn gộp chúng lại:
-
-1.Chuột phải vào phân vùng thứ 2 (sdb2) -> chọn Delete.
-
-<img width="771" height="534" alt="image" src="https://github.com/user-attachments/assets/89928f7a-275c-4f7e-8ff6-685e4c59d825" />
-
-
-2.Chuột phải vào phân vùng thứ 1 (sdb1) -> chọn Resize/Move.
-
-3.Dùng chuột kéo thanh dung lượng về phía bên phải cho đến khi lấp đầy khoảng trống. Nhấn Resize/Move.
-
-<img width="766" height="530" alt="image" src="https://github.com/user-attachments/assets/1be830dc-5ce2-48fe-9a62-3c2afd971a7a" />
-
-
-4.Nhấn dấu tích xanh (V) để áp dụng thay đổi.
-
-<img width="768" height="525" alt="image" src="https://github.com/user-attachments/assets/d667cb8d-653a-436b-91c1-dc57566aa710" />
+<img width="619" height="244" alt="image" src="https://github.com/user-attachments/assets/87d75636-2913-47b2-bf57-f08cbf83d313" />
 
 
 
 
+### Gộp ổ
+
+#### Bước 1. Xóa các phân vùng hiện tại
+
+Để gộp lại ổ cứng, bạn cần xóa các phân vùng hiện tại (/dev/sdb1 và /dev/sdb2).
+
+- Chạy lệnh fdisk để vào công cụ quản lý phân vùng:
+```yaml
+sudo fdisk /dev/sdb
+```
+- Xóa các phân vùng:
+
+Gõ d để xóa phân vùng.
+
+Hệ thống sẽ yêu cầu bạn chọn số phân vùng muốn xóa. Nếu bạn có hai phân vùng (/dev/sdb1 và /dev/sdb2), bạn sẽ phải thực hiện việc này hai lần.
+
+Sau khi xóa, gõ w để lưu thay đổi.
+
+<img width="705" height="317" alt="image" src="https://github.com/user-attachments/assets/02fe4d88-626b-4ca4-81cb-454a686cb7c4" />
+
+#### Bước 2. Tạo lại phân vùng mới
+
+Sau khi đã xóa các phân vùng cũ, bạn có thể tạo lại một phân vùng duy nhất để sử dụng toàn bộ dung lượng của ổ.
+
+- Tạo một phân vùng mới:
+
+Chạy lại lệnh fdisk:
+```yaml
+sudo fdisk /dev/sdb
+```
+1. Gõ n để tạo phân vùng mới.
+
+2. Chọn p (Primary) để tạo phân vùng chính.
+
+3. Chọn số phân vùng, ví dụ 1 cho phân vùng đầu tiên.
+
+4. Nhấn Enter để chọn sector đầu tiên mặc định.
+
+5. Nhấn Enter lần nữa để chọn sector cuối cùng, tức là để phân vùng chiếm toàn bộ dung lượng 20GB.
+
+<img width="747" height="422" alt="image" src="https://github.com/user-attachments/assets/dea839fc-d790-472e-90a2-b00fdd3bda48" />
+
+#### Bước 3. Tạo hệ thống tệp (Filesystem) cho phân vùng mới
+
+Sau khi đã tạo lại phân vùng, bạn cần tạo một hệ thống tệp trên phân vùng mới:
+```yaml
+sudo mkfs.ext4 /dev/sdb1
+```
+<img width="596" height="308" alt="image" src="https://github.com/user-attachments/assets/8c101fa4-bd2c-478c-b3c2-8352a6ecdad5" />
+
+#### Bước 4. Tạo thư mục mount
+1.Tạo thư mục mount:
+```yaml
+sudo mkdir /mnt/data
+```
+2. Mount phân vùng mới vào thư mục:
+```yaml
+sudo mount /dev/sdb1 /mnt/data
+```
+
+#### Bước 5. Cập nhật tệp /etc/fstab
+
+Để phân vùng mới tự động mount khi hệ thống khởi động lại, bạn cần thêm nó vào tệp /etc/fstab.
+1. Mở tệp /etc/fstab:
+```yaml
+sudo nano /etc/fstab
+```
+2.Thêm dòng sau vào cuối tệp:
+```yaml
+/dev/sdb1  /mnt/data  ext4  defaults  0  2
+```
+3. Lưu và thoát (Nhấn Ctrl + X, sau đó nhấn Y và Enter).
+
+#### Bước 6. Kiểm tra lại:
+Bạn có thể sử dụng lệnh lsblk hoặc df -h để kiểm tra các phân vùng và điểm mount.
+```yaml
+lsblk
+df -h
+```
+<img width="577" height="212" alt="image" src="https://github.com/user-attachments/assets/39f362ac-4bb5-49bb-8714-0a5a99274cd1" />
 
 
 
